@@ -16,10 +16,17 @@ smallpkg --help
 # Comandos
 
 smallpkg --version
+
 smallpkg --help
+
 smallpkg --create /pasta
+
 smallpkg --install pacote.spkg
+
 smallpkg --reinstall pacote.spkg
+
 smallpkg --remove pacote
+
 smallpkg --sync
+
 smallpkg --upgrade
