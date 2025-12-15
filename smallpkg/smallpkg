@@ -1,0 +1,77 @@
+#!/bin/sh
+
+SMALLPKG_VERSION="v1.0"
+SMALLPKG_BUILD="b2025.12.15"
+CONF="/etc/smallpkg.conf"
+REPO_CONF="/etc/smallpkg/repo.conf"
+DB="/var/lib/smallpkg"
+TMP="/tmp/smallpkg"
+
+mkdir -p "$DB" "$TMP"
+
+show_help() {
+cat << EOF
+Smallpkg - SmallFloppyLinux Package Manager
+
+Uso:
+  smallpkg --create /pasta
+  smallpkg --install pacote.spkg
+  smallpkg --reinstall pacote.spkg
+  smallpkg --remove pacote
+  smallpkg --sync
+  smallpkg --upgrade
+  smallpkg --version
+  smallpkg --help
+EOF
+}
+
+case "$1" in
+  --create)
+    PKGDIR="$2"
+    PKGNAME="$(basename "$PKGDIR").spkg"
+    tar -czf "$PKGNAME" -C "$PKGDIR" .
+    echo "Pacote criado: $PKGNAME"
+    ;;
+
+  --install)
+    PKG="$2"
+    tar -xzf "$PKG" -C /
+    echo "$PKG" > "$DB/$(basename "$PKG").installed"
+    echo "Pacote instalado"
+    ;;
+
+  --reinstall)
+    PKG="$2"
+    tar -xzf "$PKG" -C /
+    echo "Pacote reinstalado"
+    ;;
+
+  --remove)
+    PKG="$2"
+    rm -f "$DB/$PKG.installed"
+    echo "Pacote removido (arquivos manuais)"
+    ;;
+
+  --sync)
+    . /usr/lib/smallpkg/repo
+    repo_sync
+    ;;
+
+  --upgrade)
+    . /usr/lib/smallpkg/repo
+    repo_upgrade
+    ;;
+
+  --version)
+    echo "Smallpkg $SMALLPKG_VERSION ($SMALLPKG_BUILD)"
+    ;;
+
+  --help|"")
+    show_help
+    ;;
+
+  *)
+    echo "Comando inválido"
+    show_help
+    ;;
+esac

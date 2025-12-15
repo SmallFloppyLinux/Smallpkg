@@ -1,0 +1,16 @@
+#!/bin/sh
+
+REPO_CONF="/etc/smallpkg/repo.conf"
+TMP="/tmp/smallpkg"
+
+repo_sync() {
+  . "$REPO_CONF"
+  mkdir -p "$TMP"
+  wget -q "$REPO_URL/packages.list" -O "$TMP/packages.list"
+  echo "Repositório sincronizado"
+}
+
+repo_upgrade() {
+  echo "Atualizando pacotes..."
+  # simples por design (floppy friendly)
+}

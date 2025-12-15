@@ -1,0 +1,6 @@
+Smallpkg Package Manager
+Copyright (c) 2025
+Autor: Sílvio Ramalho Neto da Silva
+
+Uso permitido para fins educacionais e sistemas livres.
+Redistribuição permitida com atribuição do autor.
